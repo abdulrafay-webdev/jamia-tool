@@ -60,9 +60,8 @@ export async function POST(req: NextRequest) {
         console.log("Launching Chromium on Vercel...");
         browser = await puppeteer.launch({
           args: chromium.args,
-          defaultViewport: chromium.defaultViewport,
           executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar'),
-          headless: chromium.headless,
+          headless: true,
         });
         console.log("Chromium launched successfully.");
       } catch (launchError: any) {
