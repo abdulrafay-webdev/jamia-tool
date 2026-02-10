@@ -56,11 +56,19 @@ export async function POST(req: NextRequest) {
     } else {
       // Vercel / Production logic using @sparticuz/chromium-min
       // Point to a hosted tar for chromium to keep function size small
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.tar'),
-        headless: true,
-      });
+      try {
+        console.log("Launching Chromium on Vercel...");
+        browser = await puppeteer.launch({
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
+          headless: chromium.headless,
+        });
+        console.log("Chromium launched successfully.");
+      } catch (launchError: any) {
+        console.error("Failed to launch Chromium on Vercel:", launchError);
+        throw new Error(`Chromium launch failed: ${launchError.message}`);
+      }
     }
 
     const page = await browser.newPage();
