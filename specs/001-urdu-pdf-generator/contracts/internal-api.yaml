@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: Urdu PDF Generator Internal API
+  version: 1.0.0
+  description: Internal interfaces for the PDF generation logic (Client-side).
+paths: {}
+components:
+  schemas:
+    GeneratePdfRequest:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+          description: List of applicant names.
+          minItems: 1
+      required:
+        - names
+    
+    PdfGeneratorFunction:
+      description: Signature for the client-side generation function.
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/GeneratePdfRequest'
+        output:
+          type: string
+          format: binary
+          description: Blob or Uint8Array of the generated PDF.

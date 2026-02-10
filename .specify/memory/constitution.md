@@ -1,55 +1,46 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: New -> 1.0.0
+- Added Principles: RTL First, Urdu Font Embedding, Content Integrity, Page Structure, Combined Output, Design Ethics.
+- Templates requiring updates: None (templates are generic, specific constraints apply to content).
+-->
+
+# Urdu PDF Generator Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. RTL First (Right-to-Left)
+RTL layout is mandatory for all text and UI elements.
+Rationale: Urdu is a right-to-left language; incorrect directionality renders the text unreadable and unprofessional.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Urdu Font Embedding
+Urdu Unicode font (e.g., Jameel Noori Nastaliq) MUST be embedded in the generated PDF.
+Rationale: Relying on system fonts guarantees failure on many devices. Embedding ensures consistent, high-quality rendering everywhere.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Content Integrity (Immutable Text)
+The provided Urdu text for the application body MUST NOT be modified, auto-corrected, or summarized.
+Rationale: The text contains specific religious or formal phrasing; any alteration risks changing the meaning or tone.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Page Structure & Personalization
+- One page per name.
+- Same application content on every page.
+- **Mandatory Header**: Each page must start with the greeting "محترم جناب {{NAME}}".
+Rationale: This is a strict format requirement for the personalized bulk generation workflow.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Combined Output
+The tool MUST generate a SINGLE multi-page PDF file containing all personalized pages.
+Rationale: Users need a single file for easy printing and sharing, not a zip file of hundreds of individual PDFs.
 
-### [PRINCIPLE_6_NAME]
-
-
-[PRINCIPLE__DESCRIPTION]
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### VI. Clean Islamic Design
+The UI and generated PDF styling must be clean, respectful, and "Islamic-friendly" (avoiding inappropriate imagery or chaotic layouts).
+Rationale: Respects the cultural and religious context of the users and content.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### Amendment Process
+Changes to these principles require a version bump (MAJOR for removals/redefinitions, MINOR for additions). All changes must be documented in this file.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Compliance
+All architectural decisions, code reviews, and feature specifications must explicitly check against these principles.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-09 | **Last Amended**: 2026-02-09
