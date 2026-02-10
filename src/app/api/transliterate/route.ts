@@ -9,6 +9,12 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
 export async function POST(req: NextRequest) {
   try {
+    const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("GOOGLE_GEMINI_API_KEY is not set in the environment variables.");
+      return NextResponse.json({ error: 'Server configuration error: API Key missing.' }, { status: 500 });
+    }
+
     const { names } = await req.json();
 
     if (!names || !Array.isArray(names) || names.length === 0) {
