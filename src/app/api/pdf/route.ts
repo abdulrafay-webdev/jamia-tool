@@ -54,9 +54,8 @@ export async function POST(req: NextRequest) {
       // Vercel / Production logic using @sparticuz/chromium
       browser = await puppeteer.launch({
         args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: chromium.headless as any,
       });
     }
 
