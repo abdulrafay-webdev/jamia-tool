@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
       margin: { top: '0', right: '0', bottom: '0', left: '0' }
     });
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="applications.pdf"',
