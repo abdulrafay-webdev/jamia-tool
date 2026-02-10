@@ -5,19 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || '');
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"});
 
-export async function GET(req: NextRequest) {
-  try {
-    const models = await genAI.listModels();
-    const modelInfo = models.map(model => ({
-      name: model.name,
-      supportedMethods: model.supportedGenerationMethods,
-    }));
-    return NextResponse.json({ availableModels: modelInfo });
-  } catch (error: any) {
-    console.error('List Models Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
+// GET method removed to fix build error (listModels not available)
 
 export async function POST(req: NextRequest) {
   try {
