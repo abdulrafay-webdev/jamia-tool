@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import puppeteer from 'puppeteer-core';
-import chromium from '@sparticuz/chromium';
+import chromium from '@sparticuz/chromium-min';
 import { APPLICATION_TEXT, GREETING_TEMPLATE, FOOTER_DETAILS } from '@/consts/content';
 import path from 'path';
 import fs from 'fs';
@@ -19,6 +19,9 @@ function getLocalExecutablePath() {
   }
   return null;
 }
+
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60; // Allow more time for PDF generation
 
 export async function POST(req: NextRequest) {
   let browser;
@@ -51,10 +54,11 @@ export async function POST(req: NextRequest) {
         headless: true
       });
     } else {
-      // Vercel / Production logic using @sparticuz/chromium
+      // Vercel / Production logic using @sparticuz/chromium-min
+      // Point to a hosted tar for chromium to keep function size small
       browser = await puppeteer.launch({
         args: chromium.args,
-        executablePath: await chromium.executablePath(),
+        executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
         headless: true,
       });
     }
