@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { APPLICATION_TEXT, GREETING_TEMPLATE, FOOTER_DETAILS } from '@/consts/content';
 import path from 'path';
 import fs from 'fs';
 
-// Common Windows paths for Chrome/Edge
+// Common Windows paths for local development fallback
 const CHROME_PATHS = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
@@ -12,7 +13,7 @@ const CHROME_PATHS = [
   'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
 ];
 
-function getExecutablePath() {
+function getLocalExecutablePath() {
   for (const p of CHROME_PATHS) {
     if (fs.existsSync(p)) return p;
   }
@@ -28,12 +29,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Names must be an array' }, { status: 400 });
     }
 
-    const executablePath = getExecutablePath();
-    if (!executablePath) {
-      return NextResponse.json({ error: 'Chrome/Edge not found. Please install a browser.' }, { status: 500 });
-    }
-
-    // Load font file as base64 for embedding to avoid network requests during setContent
+    // Load font file as base64
     let fontBase64 = '';
     const fontPath = path.join(process.cwd(), 'public', 'fonts', 'JameelNooriNastaliq.ttf');
     if (fs.existsSync(fontPath)) {
@@ -41,15 +37,31 @@ export async function POST(req: NextRequest) {
       fontBase64 = fontBuffer.toString('base64');
     }
 
-    browser = await puppeteer.launch({
-      executablePath,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'],
-      headless: true
-    });
+    // Determine if we are running locally or on Vercel
+    const isLocal = process.env.NODE_ENV === 'development' || !process.env.VERCEL;
+
+    if (isLocal) {
+      const executablePath = getLocalExecutablePath();
+      if (!executablePath) {
+        return NextResponse.json({ error: 'Local browser not found. Please install Chrome/Edge.' }, { status: 500 });
+      }
+      browser = await puppeteer.launch({
+        executablePath,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'],
+        headless: true
+      });
+    } else {
+      // Vercel / Production logic using @sparticuz/chromium
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    }
 
     const page = await browser.newPage();
 
-    // Create HTML content with embedded font
     const htmlContent = `
       <!DOCTYPE html>
       <html dir="rtl" lang="ur">
@@ -83,13 +95,13 @@ export async function POST(req: NextRequest) {
           }
           .greeting-inline {
             display: block;
-            margin-bottom: 6pt; /* Space after greeting */
+            margin-bottom: 6pt;
           }
           .text-para {
             margin-bottom: 0;
           }
           .empty-line {
-            line-height: 0.5; /* Significantly reduced spacing for empty lines */
+            line-height: 0.5;
           }
           .footer {
             position: absolute;
@@ -156,10 +168,7 @@ export async function POST(req: NextRequest) {
       </html>
     `;
 
-    // Use 'domcontentloaded' instead of 'networkidle0' to speed up and avoid timeouts
     await page.setContent(htmlContent, { waitUntil: 'domcontentloaded' });
-
-    // Small delay to ensure font rendering (since it's base64, it's fast)
     await new Promise(r => setTimeout(r, 500));
 
     const pdfBuffer = await page.pdf({
