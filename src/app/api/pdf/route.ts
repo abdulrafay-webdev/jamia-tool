@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
           .page {
             width: 210mm;
             height: 297mm;
-            padding: 50mm 15mm 20mm 15mm;
+            padding: 65mm 15mm 20mm 15mm;
             box-sizing: border-box;
             page-break-after: always;
             background: white;
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
           }
           .content {
             font-size: 13pt;
-            line-height: 1.6;
+            line-height: 1.4;
             text-align: justify;
             color: #333;
             margin-bottom: 30pt;
