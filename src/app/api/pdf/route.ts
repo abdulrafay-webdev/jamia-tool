@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
             position: relative;
           }
           .content {
-            font-size: 12pt;
+            font-size: 13pt;
             line-height: 1.6;
             text-align: justify;
             color: #333;
@@ -161,13 +161,13 @@ export async function POST(req: NextRequest) {
             <div class="footer">
               <div class="footer-col footer-left">
                 <div class="footer-title">${FOOTER_DETAILS.left.name}</div>
-                <div><strong>Bank:</strong> ${FOOTER_DETAILS.left.bank}</div>
+                <div><strong>Name:</strong> ${FOOTER_DETAILS.left.bank}</div>
                 <div><strong>Account:</strong> ${FOOTER_DETAILS.left.account}</div>
                 <div><strong>IBAN:</strong> ${FOOTER_DETAILS.left.iban}</div>
               </div>
               <div class="footer-col footer-right">
                 <div class="footer-title">${FOOTER_DETAILS.right.name}</div>
-                <div><strong>Bank:</strong> ${FOOTER_DETAILS.right.bank}</div>
+                <div><strong>Name:</strong> ${FOOTER_DETAILS.right.bank}</div>
                 <div><strong>Account:</strong> ${FOOTER_DETAILS.right.account}</div>
                 <div><strong>IBAN:</strong> ${FOOTER_DETAILS.right.iban}</div>
               </div>
