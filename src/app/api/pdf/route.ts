@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       // Point to a hosted tar for chromium to keep function size small
       browser = await puppeteer.launch({
         args: chromium.args,
-        executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
+        executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.tar'),
         headless: true,
       });
     }
